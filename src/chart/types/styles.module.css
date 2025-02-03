@@ -1,0 +1,30 @@
+.pieCell {
+  transform-origin: center;
+  transition: transform 0.2s ease-in-out;
+}
+
+.pieCell:hover,
+.pieCell:focus {
+  transform: scale(1.03);
+  outline: none;
+}
+
+.tooltip {
+  background-color: #000000d1;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Add transition to apply the animation */
+.svgAnimateFill {
+  animation: fillChange 0.3s ease-in-out forwards;
+  transition: fill 0.3s ease-in-out;
+}
+
+.brush :global(.recharts-brush-traveller:focus) {
+  outline: none;
+}
+.brush :global(.recharts-brush-traveller) {
+  cursor: unset !important;
+}
