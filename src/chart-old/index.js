@@ -12,17 +12,12 @@ export const Recharts = () => {
     <>
       <PieChartRender />
       <DoughnutChartRender />
-
       <BarLengend />
       <StackedBar />
       <Composed />
-
       <AreaChartRender />
       <LineChartRender />
       <ScatterChartRender />
-      {/* <h1>Nivo chart</h1>
-
-      <NivoBarChart /> */}
     </>
   );
 };

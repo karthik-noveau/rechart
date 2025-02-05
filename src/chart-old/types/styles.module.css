@@ -1,7 +1,7 @@
-.pieCell {
+/* .pieCell {
   transform-origin: center;
   transition: transform 0.2s ease-in-out;
-}
+} */
 
 .pieCell:hover,
 .pieCell:focus {

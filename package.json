@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@nivo/bar": "^0.88.0",
     "antd": "^5.23.1",
     "cra-template": "1.2.0",
     "install": "^0.13.0",
