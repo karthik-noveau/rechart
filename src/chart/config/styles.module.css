@@ -133,7 +133,7 @@
 }
 .disable .boxFill,
 .disable .legendName {
-  opacity: 0.5;
+  opacity: 0.2;
 }
 .checkbox :global(.ant-checkbox + span) {
   padding-inline-start: 2px !important;

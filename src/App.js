@@ -34,13 +34,22 @@ function App() {
     return data;
   };
 
+  let dataCount = 100;
+
   return (
     <>
       <h1 style={{ textAlign: "center", fontWeight: 300, marginTop: "50px" }}>
         Bar
       </h1>
       <div style={{ width: "100%", height: "400px" }}>
-        <DynamicChart type="bar" data={generateLargeData(2)} />
+        <DynamicChart
+          type="bar"
+          barRadius={8}
+          data={generateLargeData(dataCount)}
+        />
+      </div>
+      <div style={{ width: "100%", height: "400px" }}>
+        <DynamicChart type="bar" data={generateLargeData(dataCount)} />
       </div>
 
       <h1 style={{ textAlign: "center", fontWeight: 300, marginTop: "50px" }}>
@@ -49,7 +58,7 @@ function App() {
       <div style={{ width: "100%", height: "400px" }}>
         <DynamicChart
           type="bar"
-          data={generateLargeData(10)}
+          data={generateLargeData(dataCount)}
           enableStacked={true}
         />
       </div>
@@ -60,7 +69,7 @@ function App() {
       <div style={{ width: "100%", height: "400px" }}>
         <DynamicChart
           type="bar"
-          data={generateLargeData(10)}
+          data={generateLargeData(dataCount)}
           enableStacked={true}
           enablePercentage={true}
         />

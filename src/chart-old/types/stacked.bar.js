@@ -82,7 +82,7 @@ let largeData = [
   {
     name: "Page GPage GPage GPage G",
     uv: 1,
-    pv:750,
+    pv: 750,
     amt: 21000,
     color: "#82a6d8",
   },
@@ -314,7 +314,7 @@ export const StackedBar = () => {
             strokeWidth={5}
             id="bar-bar"
             fill="#4084F4"
-            label={{ position: "top" }}
+            // label={{ position: "top" }}
             stackId="a"
           ></Bar>
 
@@ -326,7 +326,7 @@ export const StackedBar = () => {
             strokeWidth={5}
             fill="#FDBB05"
             id="bar-bar"
-            label={{ position: "top" }}
+            // label={{ position: "top" }}
             stackId="a"
           ></Bar>
         </BarChart>

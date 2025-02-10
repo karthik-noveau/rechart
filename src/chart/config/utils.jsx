@@ -12,8 +12,6 @@ export const CustomTooltip = ({ payload, enablePercentage, label }) => {
       <span className={styles.title}>{label}</span>
 
       {payload.map((entry) => {
-        console.log(entry.fill);
-
         return (
           <div className={styles.row}>
             <div
