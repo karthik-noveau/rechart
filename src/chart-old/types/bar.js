@@ -96,7 +96,7 @@ export const BarChartRender = ({ data = generateLargeData(100) }) => {
           <Brush
             className={styles.brush}
             dataKey="name"
-            height={30}
+        
             stroke="#4084F4"
             onChange={handleBrushChange}
             startIndex={brushIndex[0]}

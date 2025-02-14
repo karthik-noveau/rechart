@@ -14,3 +14,8 @@ export const CHART_SIZE = {
   MIN_WIDTH: 100,
   MIN_HEIGHT: 100,
 };
+
+export const DATA_POINT_LABEL_POSITION = {
+  INSIDE_TOP: "insideTop",
+  OUTSIDE_TOP: "top",
+};

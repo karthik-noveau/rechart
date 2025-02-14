@@ -5,6 +5,8 @@ export const DynamicChart = ({
   data,
   enablePercentage,
   enableStacked,
+  enableDataPointLabel,
+  dataPointLabelPosition,
   barRadius,
   isStacked,
 }) => {
@@ -15,6 +17,8 @@ export const DynamicChart = ({
           <BarChartView
             data={data}
             barRadius={barRadius}
+            enableDataPointLabel={enableDataPointLabel}
+            dataPointLabelPosition={dataPointLabelPosition}
             isStacked={isStacked}
             enablePercentage={enablePercentage}
             enableStacked={enableStacked}

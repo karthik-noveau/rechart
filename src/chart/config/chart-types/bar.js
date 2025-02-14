@@ -14,19 +14,24 @@ import {
 } from "recharts";
 
 import styles from "../styles.module.css";
-import { CHART_SIZE, CHART_COLORS } from "../../constants";
+import {
+  CHART_SIZE,
+  CHART_COLORS,
+  DATA_POINT_LABEL_POSITION,
+} from "../../constants";
 import { CustomLegend, CustomTooltip } from "../utils";
 
 export const BarChartView = ({
   data,
-  barRadius = null,
+  barRadius = 8,
+  enableDataPointLabel = false,
+  dataPointLabelPosition,
   enableStacked,
   enablePercentage,
 }) => {
   const allkeys = Object.keys(data[0]).filter(
     (key) => key !== "name" && key !== "id"
   );
-  const [brushIndex, setBrushIndex] = useState([0, 1]);
 
   const [activeKeys, setActiveKeys] = useState(allkeys);
   const [hoveredLegend, setHoveredLegend] = useState(null);
@@ -50,12 +55,12 @@ export const BarChartView = ({
       }, 0);
 
       const newItem = { ...item };
-      Object.keys(newItem).forEach((key) => {
+      for (const key of Object.keys(newItem)) {
         if (key !== "name" && key !== "id") {
           const percentage = total === 0 ? 0 : (newItem[key] / total) * 100;
           newItem[key] = Math.round(percentage * 10) / 10;
         }
-      });
+      }
 
       return newItem;
     });
@@ -76,17 +81,24 @@ export const BarChartView = ({
     let opacity = 1;
 
     let stackedBarGap = 2;
+    let topGap = enableStacked
+      ? enableStacked && index === totalBars - 1
+        ? Math.min(barRadius, 8)
+        : 0
+      : Math.min(barRadius, 8);
 
     if (hoveredLegend) {
       opacity = isHoveredKey ? 1 : 0.2;
     }
 
-    const borderRadius = barRadius ? Math.min(barRadius, width / 2) : 5;
+    const borderRadius = barRadius ? Math.min(barRadius, width / 2) : 0;
 
     const shouldApplyBorderRadius =
       !enableStacked || (enableStacked && index === totalBars - 1);
 
-    const adjustedY = shouldApplyBorderRadius ? y - borderRadius : y;
+    const adjustedY = shouldApplyBorderRadius
+      ? y - borderRadius + topGap
+      : y + topGap;
     const adjustedHeight = shouldApplyBorderRadius
       ? height + borderRadius
       : height;
@@ -103,8 +115,8 @@ export const BarChartView = ({
         Q${x + width},${adjustedY} ${x + width},${
       adjustedY + (shouldApplyBorderRadius ? borderRadius : 0)
     } 
-        L${x + width},${adjustedY + adjustedHeight - stackedBarGap} 
-        L${x},${adjustedY + adjustedHeight - stackedBarGap} 
+        L${x + width},${adjustedY + adjustedHeight - stackedBarGap - topGap} 
+        L${x},${adjustedY + adjustedHeight - stackedBarGap - topGap} 
         Z
       `;
 
@@ -119,8 +131,8 @@ export const BarChartView = ({
           opacity={opacity}
           dataKey={dataKey}
           cursor="pointer"
-          strokeWidth={barRef?.dataKey === dataKey ? 4 : 0}
-          stroke="#E4E7EC"
+          // strokeWidth={barRef?.dataKey === dataKey ? 4 : 0}
+          // stroke="#E4E7EC"
         />
       </>
     );
@@ -152,6 +164,28 @@ export const BarChartView = ({
     );
   };
 
+  let addDataPointLabelPosition = {
+    ...(enablePercentage && { formatter: (value) => `${value}%` }),
+  };
+
+  switch (dataPointLabelPosition) {
+    case DATA_POINT_LABEL_POSITION.INSIDE_TOP:
+      addDataPointLabelPosition = {
+        position: DATA_POINT_LABEL_POSITION.INSIDE_TOP,
+        fill: "#fff",
+      };
+      break;
+    case DATA_POINT_LABEL_POSITION.OUTSIDE_TOP:
+      addDataPointLabelPosition = {
+        position: DATA_POINT_LABEL_POSITION.OUTSIDE_TOP,
+        fill: "#374458",
+      };
+      console.log(dataPointLabelPosition, addDataPointLabelPosition);
+      break;
+    default:
+      addDataPointLabelPosition = null;
+  }
+
   return (
     <ResponsiveContainer
       minWidth={CHART_SIZE.MIN_WIDTH}
@@ -164,7 +198,6 @@ export const BarChartView = ({
         animationDuration={5000}
         // barGap="20%"
         // barCategoryGap="20%"
-        // outerRadius="10px"
       >
         <XAxis
           dataKey="name"
@@ -188,10 +221,10 @@ export const BarChartView = ({
         <YAxis
           dx={-8}
           tickLine={{ stroke: "#e6e6e6" }}
-          fontSize={14}
           width={100}
+          color="#545C6B"
+          fontSize={14}
           fontWeight={400}
-          color="#374458"
         />
         <Tooltip
           wrapperClassName={styles.toolTipWrapper}
@@ -222,14 +255,13 @@ export const BarChartView = ({
             />
           }
         />
-        <ReferenceLine y={0} stroke="#000" />
-        <CartesianGrid stroke="#e6e6e6" />
+        <ReferenceLine y={0} x={0} stroke="#e6e6e6" />
+        <CartesianGrid strokeDasharray="5 5" stroke="#e6e6e6" />
 
         {Object.keys(data[0])
           .filter((key) => key !== "name" && key !== "id")
           .map((key, index) => {
             // Only render the active bars based on legend
-
             const color = CHART_COLORS[index % CHART_COLORS.length];
             return (
               <Bar
@@ -240,7 +272,15 @@ export const BarChartView = ({
                 strokeWidth={5}
                 fill={color}
                 hide={!activeKeys.includes(key)}
-                label={{ position: "top" }}
+                {...(enableDataPointLabel && {
+                  label: {
+                    ...addDataPointLabelPosition,
+                    fontSize: 14,
+                    offset: 10,
+                    fontWeight: 400,
+                    zoomAndPan: true,
+                  },
+                })}
                 shape={
                   <BarShape
                     opacity={1}
@@ -253,7 +293,71 @@ export const BarChartView = ({
               />
             );
           })}
-        <Brush startIndex={0} endIndex={1} />
+        <Brush
+          startIndex={0}
+          endIndex={4}
+          height={20}
+          fill="#D6E7FB"
+          // y={-1}
+          stroke="transparent"
+          traveller={({ x, y, width, height }) => {
+            const boxX_R = 12;
+            const boxY_R = 30;
+            const boxX = x + (width - boxX_R) / 2;
+            const boxY = y + (height - boxY_R) / 2;
+
+            const lineRightX_R = 0.5;
+            const lineRightY_R = 15;
+            const lineRightX = x + (width - lineRightX_R) / 2;
+            const lineRightY = y + (height - lineRightY_R) / 2;
+
+            const lineLeftX_R = 0.5;
+            const lineLeftY_R = 15;
+            const lineLeftX = x + (width - lineLeftX_R) / 2;
+            const lineLeftY = y + (height - lineLeftY_R) / 2;
+
+            const borderRadius = 2; // Border radius for the rounded corners
+
+            // Path for a rounded rectangle
+            const roundedBoxPath = `
+              M${boxX + borderRadius},${boxY}
+              h${boxX_R - 2 * borderRadius}
+              a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},${borderRadius}
+              v${boxY_R - 2 * borderRadius}
+              a${borderRadius},${borderRadius} 0 0 1 -${borderRadius},${borderRadius}
+              h-${boxX_R - 2 * borderRadius}
+              a${borderRadius},${borderRadius} 0 0 1 -${borderRadius},-${borderRadius}
+              v-${boxY_R - 2 * borderRadius}
+              a${borderRadius},${borderRadius} 0 0 1 ${borderRadius},-${borderRadius}
+              Z
+            `;
+
+            return (
+              <g>
+                {/* box with rounded corners */}
+                <path d={roundedBoxPath} fill="white" stroke="#bababa" />
+
+                {/* line left */}
+                <path
+                  d={`M${
+                    lineLeftX - 2
+                  },${lineLeftY}h${lineLeftX_R}v${lineLeftY_R}h-${lineLeftX_R}Z`}
+                  fill="white"
+                  stroke="#bababa"
+                />
+
+                {/* line right */}
+                <path
+                  d={`M${
+                    lineRightX + 2
+                  },${lineRightY}h${lineRightX_R}v${lineRightY_R}h-${lineRightX_R}Z`}
+                  fill="white"
+                  stroke="#bababa"
+                />
+              </g>
+            );
+          }}
+        />
       </BarChart>
     </ResponsiveContainer>
   );

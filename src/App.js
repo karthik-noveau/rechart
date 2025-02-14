@@ -1,6 +1,7 @@
 import "./App.css";
 import { DynamicChart } from "./chart";
 import { Recharts } from "./chart-old";
+import { DATA_POINT_LABEL_POSITION } from "./chart/constants";
 // import { Recharts } from "./chart-old";
 
 function App() {
@@ -46,6 +47,8 @@ function App() {
           type="bar"
           barRadius={8}
           data={generateLargeData(dataCount)}
+          enableDataPointLabel={true}
+          dataPointLabelPosition={DATA_POINT_LABEL_POSITION.INSIDE_TOP}
         />
       </div>
       <div style={{ width: "100%", height: "400px" }}>
@@ -60,6 +63,8 @@ function App() {
           type="bar"
           data={generateLargeData(dataCount)}
           enableStacked={true}
+          enableDataPointLabel={true}
+          dataPointLabelPosition={DATA_POINT_LABEL_POSITION.OUTSIDE_TOP}
         />
       </div>
 
@@ -74,8 +79,6 @@ function App() {
           enablePercentage={true}
         />
       </div>
-
-      {/* <Recharts /> */}
     </>
   );
 }
