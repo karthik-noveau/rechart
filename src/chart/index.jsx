@@ -29,7 +29,5 @@ export const DynamicChart = ({
     }
   };
 
-  return (
-    <div style={{ width: "100%", height: "100%" }}>{renderChartType()}</div>
-  );
+  return <>{renderChartType()}</>;
 };

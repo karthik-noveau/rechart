@@ -152,14 +152,15 @@ export const BarChartView = ({
     setHoveredLegend(key);
   };
 
-  const CustomCursor = ({ x, y, width, height }) => {
+  const CustomCursor = (props) => {
+    const { x, y, width, height } = props;
     return (
       <rect
         x={x}
         y={y}
         width={width}
         height={height}
-        fill="rgba(15, 22, 36, 0.03)" // Custom background color with transparency
+        fill="rgba(15, 22, 36, 0.03)"
       />
     );
   };
@@ -187,13 +188,10 @@ export const BarChartView = ({
   }
 
   return (
-    <ResponsiveContainer
-      minWidth={CHART_SIZE.MIN_WIDTH}
-      minHeight={CHART_SIZE.MIN_HEIGHT}
-    >
+    <ResponsiveContainer width="100%" height="100%">
       <BarChart
         data={transformedData}
-        margin={{ top: 20, right: 30, left: 20, bottom: 0 }}
+        margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
         onMouseMove={onMouseMove}
         animationDuration={5000}
         // barGap="20%"
@@ -225,9 +223,18 @@ export const BarChartView = ({
           color="#545C6B"
           fontSize={14}
           fontWeight={400}
-        />
+        >
+          <Label
+            value="Pages of my website"
+            dx={-25}
+            angle="-90"
+            position="end"
+            color="#545C6B"
+            fontSize={14}
+            fontWeight={400}
+          />
+        </YAxis>
         <Tooltip
-          wrapperClassName={styles.toolTipWrapper}
           animationEasing="linear"
           animationDuration={200}
           content={(props) => {
@@ -256,7 +263,7 @@ export const BarChartView = ({
           }
         />
         <ReferenceLine y={0} x={0} stroke="#e6e6e6" />
-        <CartesianGrid strokeDasharray="5 5" stroke="#e6e6e6" />
+        <CartesianGrid st stroke="#e6e6e6" />
 
         {Object.keys(data[0])
           .filter((key) => key !== "name" && key !== "id")
@@ -298,7 +305,6 @@ export const BarChartView = ({
           endIndex={4}
           height={20}
           fill="#D6E7FB"
-          // y={-1}
           stroke="transparent"
           traveller={({ x, y, width, height }) => {
             const boxX_R = 12;

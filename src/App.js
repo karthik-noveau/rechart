@@ -1,6 +1,7 @@
 import "./App.css";
 import { DynamicChart } from "./chart";
 import { Recharts } from "./chart-old";
+import ShortLinePieHideCollisions from "./chart-old/types/pie";
 import { DATA_POINT_LABEL_POSITION } from "./chart/constants";
 // import { Recharts } from "./chart-old";
 
@@ -39,17 +40,57 @@ function App() {
 
   return (
     <>
-      <h1 style={{ textAlign: "center", fontWeight: 300, marginTop: "50px" }}>
+      {/* <h1 style={{ textAlign: "center", fontWeight: 300, marginTop: "50px" }}>
         Bar
       </h1>
-      <div style={{ width: "100%", height: "400px" }}>
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 300px",
+          gridTemplateRows: "1fr",
+          height: "100vh",
+        }}
+      >
         <DynamicChart
           type="bar"
           barRadius={8}
-          data={generateLargeData(dataCount)}
+          data={[
+            {
+              name: "india",
+              id: "country_4sz",
+              laptop: 1200,
+            },
+            {
+              name: "usa",
+              id: "pop_9xy",
+              pendrive: 5000,
+            },
+            {
+              name: "chinna",
+              id: "gdp_2ab",
+              mouse: 21400,
+            },
+            {
+              name: "america",
+              id: "country_4sz",
+              keybord: 1200,
+            },
+            {
+              name: "africa",
+              id: "pop_9xy",
+              ssd: 140,
+            },
+            {
+              name: "france",
+              id: "gdp_2ab",
+              hdd: 21400,
+            },
+          ]}
           enableDataPointLabel={true}
           dataPointLabelPosition={DATA_POINT_LABEL_POSITION.INSIDE_TOP}
         />
+
+        <div style={{ background: "red" }}>builder</div>
       </div>
       <div style={{ width: "100%", height: "400px" }}>
         <DynamicChart type="bar" data={generateLargeData(dataCount)} />
@@ -78,7 +119,9 @@ function App() {
           enableStacked={true}
           enablePercentage={true}
         />
-      </div>
+      </div> */}
+
+      <ShortLinePieHideCollisions />
     </>
   );
 }
